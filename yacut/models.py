@@ -1,5 +1,4 @@
 from datetime import datetime
-from http import HTTPStatus
 from flask import url_for
 import random
 import re
@@ -23,9 +22,9 @@ class URLMap(db.Model):
         )
 
     @staticmethod
-    def from_dict(self, data):
-        self.original = data['url']
-        self.short = data['custom_id']
+    def from_dict(data):
+        URLMap.original = data['url']
+        URLMap.short = data['custom_id']
 
     @staticmethod
     def get(short):
@@ -33,9 +32,8 @@ class URLMap(db.Model):
 
     @staticmethod
     def check_allowed_char(custom_id):
-        for char in custom_id:
-            if char not in ALLOWED_CHAR:
-                return False
+        if not re.match(ALLOWED_REGULAR, custom_id):
+            return False
         return True
 
     @staticmethod
@@ -44,30 +42,28 @@ class URLMap(db.Model):
         return ''.join(short)
 
     @staticmethod
-    def check_unique_short_id(custom_id):
-        if URLMap.query.filter_by(short=custom_id).first():
-            return custom_id
-        return None
+    def check_unique_short_id(short):
+        if URLMap.get(short):
+            return short
 
     @staticmethod
     def get_short_url(short):
         return url_for('redirect_url', short=short, _external=True)
 
-    @staticmethod
-    def save(original, short=None, validate=False):
-        if short in [None, ""]:
+    def save(original, short, validate=False):
+        if short is None:
             short = URLMap.get_unique_short_id()
-        if validate:
-            if len(short) > CUSTOM_LENGTH or not re.match(ALLOWED_REGULAR, short):
-                raise InvalidAPIUsage(
-                    'Указано недопустимое имя для короткой ссылки',
-                    HTTPStatus.BAD_REQUEST
-                )
+
+        if len(short) > CUSTOM_LENGTH or not re.match(ALLOWED_REGULAR, short):
+            raise InvalidAPIUsage(
+                'Указано недопустимое имя для короткой ссылки'
+            )
+
         if URLMap.check_unique_short_id(short):
             raise InvalidAPIUsage(
-                (f'Имя "{short}" уже занято.'),
-                HTTPStatus.BAD_REQUEST
+                (f'Имя "{short}" уже занято.')
             )
+
         url = URLMap(
             original=original,
             short=short
