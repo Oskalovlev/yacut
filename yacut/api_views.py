@@ -17,11 +17,14 @@ def create_id():
     if 'url' not in data:
         raise InvalidAPIUsage('\"url\" является обязательным полем!', HTTPStatus.BAD_REQUEST)
 
-    return jsonify(URLMap.save(
-        data['url'],
-        data.get('custom_id'),
-        validate=True
-    ).to_dict()), HTTPStatus.CREATED
+    try:
+        return jsonify(URLMap.save(
+            data['url'],
+            data.get('custom_id'),
+            validate=True
+        ).to_dict()), HTTPStatus.CREATED
+    except ValueError as error:
+        raise InvalidAPIUsage(str(error))
 
 
 @app.route('/api/id/<string:short>/', methods=['GET'])

@@ -1,10 +1,8 @@
 from datetime import datetime
-from flask import url_for
 import random
 import re
 
 from . import db
-from .error_handlers import InvalidAPIUsage
 from .constants import ORIGINAL_LENGTH, CUSTOM_LENGTH, URL
 from .constants import ALLOWED_CHAR, RANDOM_LENGTH, ALLOWED_REGULAR
 
@@ -32,7 +30,7 @@ class URLMap(db.Model):
 
     @staticmethod
     def check_allowed_char(custom_id):
-        if not re.match(ALLOWED_REGULAR, custom_id):
+        if re.match(ALLOWED_REGULAR, custom_id) is None:
             return False
         return True
 
@@ -46,23 +44,17 @@ class URLMap(db.Model):
         if URLMap.get(short):
             return short
 
-    @staticmethod
-    def get_short_url(short):
-        return url_for('redirect_url', short=short, _external=True)
-
     def save(original, short, validate=False):
         if short is None:
             short = URLMap.get_unique_short_id()
 
         if len(short) > CUSTOM_LENGTH or not re.match(ALLOWED_REGULAR, short):
-            raise InvalidAPIUsage(
+            raise ValueError(
                 'Указано недопустимое имя для короткой ссылки'
             )
 
         if URLMap.check_unique_short_id(short):
-            raise InvalidAPIUsage(
-                (f'Имя "{short}" уже занято.')
-            )
+            raise ValueError(f'Имя "{short}" уже занято.')
 
         url = URLMap(
             original=original,

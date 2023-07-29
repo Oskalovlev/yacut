@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, abort
+from flask import flash, redirect, render_template, abort, url_for
 from http import HTTPStatus
 
 from . import app
@@ -14,6 +14,7 @@ def short_view():
         return render_template('short.html', form=form)
 
     short = form.custom_id.data
+    original = form.original_link.data
 
     if URLMap.check_unique_short_id(short):
         flash(f'Имя {form.custom_id.data} уже занято!')
@@ -23,12 +24,22 @@ def short_view():
         flash('Допустимые символы: A-Z, a-z, 0-9')
         return render_template('short.html', form=form)
 
-    return render_template(
-        'short.html', form=form,
-        short_url=URLMap.get_short_url(
-            URLMap.save(form.original_link.data, short).short
+    try:
+        return render_template(
+            'short.html', form=form,
+            short_url=url_for(
+                'redirect_url',
+                short=URLMap.save(original, short).short,
+                _external=True
+            )
         )
-    )
+    except ValueError:
+        flash(f'Имя {short} уже занято!')
+
+    # return render_template(
+    #     'short.html', form=form,
+    #     short_url=URLMap.save(original, short).short
+    # )
 
 
 @app.route('/<string:short>', methods=['GET'])
