@@ -20,24 +20,16 @@ class URLMap(db.Model):
         )
 
     @staticmethod
-    def from_dict(data):
-        URLMap.original = data['url']
-        URLMap.short = data['custom_id']
-
-    @staticmethod
     def get(short):
         return URLMap.query.filter_by(short=short).first()
 
     @staticmethod
     def check_allowed_char(custom_id):
-        if re.match(ALLOWED_REGULAR, custom_id) is None:
-            return False
-        return True
+        return re.match(ALLOWED_REGULAR, custom_id)
 
     @staticmethod
     def get_unique_short_id():
-        short = random.choices(ALLOWED_CHAR, k=RANDOM_LENGTH)
-        return ''.join(short)
+        return ''.join(random.choices(ALLOWED_CHAR, k=RANDOM_LENGTH))
 
     @staticmethod
     def check_unique_short_id(short):

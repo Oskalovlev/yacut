@@ -16,14 +16,6 @@ def short_view():
     short = form.custom_id.data
     original = form.original_link.data
 
-    if URLMap.check_unique_short_id(short):
-        flash(f'Имя {form.custom_id.data} уже занято!')
-        return render_template('short.html', form=form)
-
-    if short and not URLMap.check_allowed_char(short):
-        flash('Допустимые символы: A-Z, a-z, 0-9')
-        return render_template('short.html', form=form)
-
     try:
         return render_template(
             'short.html', form=form,
@@ -35,11 +27,7 @@ def short_view():
         )
     except ValueError:
         flash(f'Имя {short} уже занято!')
-
-    # return render_template(
-    #     'short.html', form=form,
-    #     short_url=URLMap.save(original, short).short
-    # )
+        return render_template('short.html', form=form)
 
 
 @app.route('/<string:short>', methods=['GET'])
