@@ -1,7 +1,7 @@
 # YaCut
 
 ## Технологии:
-[![Flask](https://codersera.com/blog/wp-content/uploads/2019/06/flask-1-300x125.png)](https://flask.palletsprojects.com/en/2.1.x/)
+[![Flask]([https://parswebserver.com/wp-content/uploads/2020/09/flask-2048x1053.png])](https://flask.palletsprojects.com/en/2.1.x/)
 
 ### Проект YaCut — это сервис укорачивания ссылок. Его назначение — ассоциировать длинную пользовательскую ссылку с короткой, которую предлагает сам пользователь или предоставляет сервис.
 
