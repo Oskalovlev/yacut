@@ -6,22 +6,22 @@
 
 * Python - 3.10
 * Flask - 2.0.2
+##### P.S. Остальной стек в requirements.txt
 
-
-#### Клонировать репозиторий и перейти в него в командной строке:
+### Клонировать репозиторий и перейти в него в командной строке:
 
 ```
-git clone 
+git clone https://github.com/Oskalovlev/yacut.git 
 ```
 
 ```
 cd yacut
 ```
 
-#### Cоздать и активировать виртуальное окружение:
+### Cоздать и активировать виртуальное окружение:
 
 ```
-python3 -m venv venv
+python -m venv venv
 ```
 
 * Если у вас Linux/macOS
@@ -36,14 +36,15 @@ python3 -m venv venv
     source venv/scripts/activate
     ```
 
-#### Установить зависимости из файла requirements.txt:
+### Установить зависимости из файла requirements.txt:
 
 ```
-python3 -m pip install --upgrade pip
+python -m pip install --upgrade pip
 ```
 
 ```
 pip install -r requirements.txt
 ```
 
-### Автор: Оскалов Лев
+### Автор 
+#### Оскалов Лев
