@@ -6,6 +6,7 @@
 
 * Python - 3.10
 * Flask - 2.0.2
+* SQLAlchemy - 1.4.29
 ##### P.S. Остальной стек в requirements.txt
 
 ### Клонировать репозиторий и перейти в него в командной строке:
@@ -44,6 +45,30 @@ python -m pip install --upgrade pip
 
 ```
 pip install -r requirements.txt
+```
+
+# Создать env.:
+
+```
+touch .env
+```
+
+### Заполните .env:
+```
+FLASK_APP=yacut
+FLASK_ENV=development
+DATABASE_URI=sqlite:///db.sqlite3
+SECRET_KEY=SECRET
+```
+##### Для работы в дебаг режиме необходимо указать ```FLASK_DEBUG=True```
+
+### Выполнить миграции и запустить проект:
+
+```
+flask db upgrade
+```
+```
+flask run
 ```
 
 ### Автор 
