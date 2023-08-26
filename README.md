@@ -60,7 +60,7 @@ FLASK_ENV=development
 DATABASE_URI=sqlite:///db.sqlite3
 SECRET_KEY=SECRET
 ```
-##### Для работы в дебаг режиме необходимо указать ```FLASK_DEBUG=True```
+##### PS Для работы в дебаг режиме необходимо указать ```FLASK_DEBUG=True```
 
 ### Выполнить миграции и запустить проект:
 
